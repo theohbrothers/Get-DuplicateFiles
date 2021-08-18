@@ -99,7 +99,7 @@ $sourceDirs | ForEach-Object {
     Get-ChildItem -LiteralPath $_ -File -Force -Recurse | Sort-Object -Property 'FullName' | Get-FileMetaData -Criteria $criteria | % {
         $fm = $_
         if ($sourceFiles.Contains($fm.key)) {
-            "Ignoring a duplicate file in source directory. file: `n$( $sourceFiles[$fm.key]['FullName'] ), duplicate: $( $fm['FullName'] )" | Write-Verbose
+            "Ignoring a duplicate file in source directory. file: `n$( $sourceFiles[$fm.key].FullName ), duplicate: $( $fm.FullName )" | Write-Verbose
         }else {
             $sourceFiles[$fm.key] = $fm
         }
@@ -112,7 +112,7 @@ $otherDirs | ForEach-Object {
     Get-ChildItem -LiteralPath $_ -File -Force -Recurse | Sort-Object -Property 'FullName' | Get-FileMetaData -Criteria $criteria | % {
         $fm = $_
         if ($otherFiles.Contains($fm.key)) {
-            "Ignoring a duplicate file in other directory. file: `n$( $otherFiles[$fm.key]['FullName'] ), duplicate: $( $fm['FullName'] )" | Write-Verbose
+            "Ignoring a duplicate file in other directory. file: `n$( $otherFiles[$fm.key].FullName ), duplicate: $( $fm.FullName )" | Write-Verbose
         }else {
             $otherFiles[$fm.key] = $fm
         }
@@ -125,11 +125,11 @@ foreach ($k in $otherFiles.Keys) {
     if ($sourceFiles.Contains($k)) {
         $s = $sourceFiles[$k]
         $o = $otherFiles[$k]
-        "File $( $o['FullName'] ) is a duplicate of $( $s['FullName'] )" | Write-Host -ForegroundColor Green
+        "File $( $o.FullName ) is a duplicate of $( $s.FullName )" | Write-Host -ForegroundColor Green
         if (!$dups.Contains($k)) {
-            $dups[$k] = @($s['FullName']) # Source file is always the first object in the array
+            $dups[$k] = @( $s.FullName ) # Source file is always the first object in the array
         }
-        $dups[$k] += $o['FullName']
+        $dups[$k] += $o.FullName
     }
 }
 
