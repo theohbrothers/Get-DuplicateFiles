@@ -47,7 +47,7 @@ function Get-FileMetaData {
             $key = ''
 
             if ($Criteria -band 1) {
-                $key += "$( $f.Name )"
+                $key += "-$( $f.Name )"
             }
 
             if ($Criteria -band 2) {
@@ -66,6 +66,7 @@ function Get-FileMetaData {
                 $o['LastWriteTimeUtcIso'] = $dateIso
             }
 
+            $key = $key -replace '^-', ''
             $o['key'] = $key
 
             $o -as [pscustomobject] # Send this immediately down the pipeline
