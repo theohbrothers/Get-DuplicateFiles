@@ -26,8 +26,8 @@ Example of a duplicate criteria: File name, file size, file hash, and date modif
 ```json
 {
     "README.md-2103-5F0F47C3F7434A4E77B53C78B0782CFDC1B67C5407172BB6D0276EEEB31EBC83-2021-08-18 01:47:32 +0000": [
-        "C:\\path\\to\\source\\README.md", // The first file is the source file.
-        "C:\\path\\to\\other\\README.md", // The rest are duplicates.
+        "C:\\path\\to\\source folder\\README.md", // The first file is the source file.
+        "C:\\path\\to\\other folder\\README.md", // The rest are duplicates.
         ...
     ],
     ...
