@@ -7,15 +7,14 @@ A script to locate duplicate files between two sets of folders (e.g. source fold
 
 It is common to have two or more folders with duplicate files, whether the files were purposedly, accidentally, or unknowingly created. This script helps to locate those duplicate files, so follow-up action can be taken on them.
 
-While this script is similar to [Get-DuplicateItem](https://github.com/theohbrothers/Get-DuplicateItem), `Get-DuplicateItem` is limited to a search scope of a single folder, and does not allow controling the duplicate criteria. In general, dealing with duplicate files in an interactive and very case-specific process, so a script that is easily editable and extensible is a better solution than a module like `Get-DuplicateItem`.
+While this script is similar to [Get-DuplicateItem](https://github.com/theohbrothers/Get-DuplicateItem), `Get-DuplicateItem` is limited to a search scope of a single folder, and does not allow controling the duplicate criteria. In general, dealing with duplicate files is an interactive and very case-specific process, so a script that is easily editable and extensible is a better solution than a module like `Get-DuplicateItem`.
 
 ## How it works
 
-- The default duplicate criteria is to match only by file name and file size.
-    - You may defined the duplicate criteria to include any of the following: File name, file size, file hash, and date modified.
+- Define the duplicate criteria to include any of the following: File name, file size, file hash, and date modified:
 - Searches two groups of folders (i.e. source and other) for all descendent files.
 - Compares files of the two groups of folders, identifying duplicates using the criteria you defined
-- Finally, exports duplicates into a duplicates.json file.
+- Finally, exports duplicates into a `duplicates.json` file.
 
 ## `duplicates.json`
 
