@@ -98,10 +98,10 @@ $sourceDirs | ForEach-Object {
     "`nProcessing source directory $( $_ )" | Write-Host -ForegroundColor Cyan
     Get-ChildItem -LiteralPath $_ -File -Force -Recurse | Sort-Object -Property 'FullName' | Get-FileMetaData -Criteria $criteria | % {
         $fm = $_
-        if ($sourceFiles.Contains($fm.key)) {
-            "Ignoring a duplicate file in source directory. file: `n$( $sourceFiles[$fm.key].FullName ), duplicate: $( $fm.FullName )" | Write-Verbose
-        }else {
+        if (! $sourceFiles.Contains($fm.key)) {
             $sourceFiles[$fm.key] = $fm
+        }else {
+            "Ignoring a duplicate file in source directory. file: `n$( $sourceFiles[$fm.key].FullName ), duplicate: $( $fm.FullName )" | Write-Verbose
         }
     }
 }
@@ -111,11 +111,10 @@ $otherDirs | ForEach-Object {
     "`nProcessing other directory $( $_ )" | Write-Host -ForegroundColor Cyan
     Get-ChildItem -LiteralPath $_ -File -Force -Recurse | Sort-Object -Property 'FullName' | Get-FileMetaData -Criteria $criteria | % {
         $fm = $_
-        if ($otherFiles.Contains($fm.key)) {
-            "Ignoring a duplicate file in other directory. file: `n$( $otherFiles[$fm.key].FullName ), duplicate: $( $fm.FullName )" | Write-Verbose
-        }else {
-            $otherFiles[$fm.key] = $fm
+        if (! $otherFiles.Contains($fm.key)) {
+            $otherFiles[$fm.key] = @()
         }
+        $otherFiles[$fm.key] += $fm
     }
 }
 
@@ -124,12 +123,15 @@ $dups = [ordered]@{}
 foreach ($k in $otherFiles.Keys) {
     if ($sourceFiles.Contains($k)) {
         $s = $sourceFiles[$k]
-        $o = $otherFiles[$k]
-        "File $( $o.FullName ) is a duplicate of $( $s.FullName )" | Write-Host -ForegroundColor Green
-        if (!$dups.Contains($k)) {
-            $dups[$k] = @( $s.FullName ) # Source file is always the first object in the array
+        foreach ($o in $otherFiles[$k]) {
+            if ($s.FullName -ne $o.FullName) {
+                "File $( $o.FullName ) is a duplicate of $( $s.FullName )" | Write-Host -ForegroundColor Green
+                if (!$dups.Contains($k)) {
+                    $dups[$k] = @( $s.FullName ) # Source file is always the first object in the array
+                }
+                $dups[$k] += $o.FullName
+            }
         }
-        $dups[$k] += $o.FullName
     }
 }
 
