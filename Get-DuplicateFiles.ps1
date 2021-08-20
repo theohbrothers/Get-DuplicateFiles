@@ -97,11 +97,11 @@ $sourceFiles = [ordered]@{}
 $sourceDirs | ForEach-Object {
     "`nProcessing source directory $( $_ )" | Write-Host -ForegroundColor Cyan
     Get-ChildItem -LiteralPath $_ -File -Force -Recurse | Sort-Object -Property 'FullName' | Get-FileMetaData -Criteria $criteria | % {
-        $fm = $_
-        if (! $sourceFiles.Contains($fm.key)) {
-            $sourceFiles[$fm.key] = $fm
+        $s = $_
+        if (! $sourceFiles.Contains($s.key)) {
+            $sourceFiles[$s.key] = $s # There may only be one unique source file
         }else {
-            "Ignoring a duplicate file in source directory. file: `n$( $sourceFiles[$fm.key].FullName ), duplicate: $( $fm.FullName )" | Write-Verbose
+            "Ignoring a duplicate file in source directory. file: `n$( $sourceFiles[$s.key].FullName ), duplicate: $( $s.FullName )" | Write-Verbose
         }
     }
 }
@@ -110,11 +110,11 @@ $otherFiles = [ordered]@{}
 $otherDirs | ForEach-Object {
     "`nProcessing other directory $( $_ )" | Write-Host -ForegroundColor Cyan
     Get-ChildItem -LiteralPath $_ -File -Force -Recurse | Sort-Object -Property 'FullName' | Get-FileMetaData -Criteria $criteria | % {
-        $fm = $_
-        if (! $otherFiles.Contains($fm.key)) {
-            $otherFiles[$fm.key] = @()
+        $o = $_
+        if (! $otherFiles.Contains($o.key)) {
+            $otherFiles[$o.key] = @() # There may be more than one other file
         }
-        $otherFiles[$fm.key] += $fm
+        $otherFiles[$o.key] += $o
     }
 }
 
