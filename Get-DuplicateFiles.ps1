@@ -134,6 +134,7 @@ foreach ($k in $otherFiles.Keys) {
         }
     }
 }
+"There were $( $dups.Count ) duplicates found." | Write-Host -ForegroundColor Green
 
 # Export duplicates to json
 $jsonFile = Join-Path $PWD 'duplicates.json'
